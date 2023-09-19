@@ -1,0 +1,28 @@
+_target_: src.models.poke_module.PokeGanModule
+
+optimizer_gen:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 0.0
+
+optimizer_disc:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.001
+  weight_decay: 0.0
+
+gen:
+  _target_: src.models.components.generators.NNGen
+  z_dim: 588
+  img_dim: 11163
+
+disc:
+  _target_: src.models.components.discriminators.NNDisc
+  img_dim: 11163
+
+criterion:
+  _target_: torch.nn.BCELoss
+
+# compile model for faster training with pytorch 2.0
+compile: false

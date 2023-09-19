@@ -4,17 +4,17 @@
 # python train.py experiment=example
 
 defaults:
-  - override /data: mnist
-  - override /model: mnist
+  - override /data: poke_gen
+  - override /model: poke_gen
   - override /callbacks: default
   - override /trainer: default
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
-tags: ["mnist", "simple_dense_net"]
+tags: ["poke_gen", "NNDisc", "NNGen"]
 
-seed: 12345
+seed: 42
 
 trainer:
   min_epochs: 10
@@ -36,6 +36,6 @@ data:
 logger:
   wandb:
     tags: ${tags}
-    group: "mnist"
+    group: "poke_gen"
   aim:
-    experiment: "mnist"
+    experiment: "poke_gen"
