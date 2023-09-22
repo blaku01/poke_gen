@@ -11,12 +11,12 @@ class PokeDataModule(LightningDataModule):
     def __init__(
         self,
         data_dir: str = "data/",
-        train_val_test_split: Tuple[int, int, int] = (0.8, 0.5, 0.15),
+        train_val_test_split: Tuple[int, int, int] = (0.8, 0.05, 0.15),
         batch_size: int = 64,
         num_workers: int = 12,
         pin_memory: bool = False,
-        grayscale: bool = True,
-        normalize: bool = True,
+        grayscale: bool = False,
+        normalize: bool = False,
         mean: tuple = None,
         std: tuple = None,
         desired_shape: Tuple = None,
@@ -24,7 +24,7 @@ class PokeDataModule(LightningDataModule):
         """Initialize a `PokeDataModule`.
 
         :param data_dir: The data directory. Defaults to `"data/"`.
-        :param train_val_test_split: The train, validation and test split. Defaults to `(0.8, 0.5, 0.15)` (percentage values).
+        :param train_val_test_split: The train, validation and test split. Defaults to `(0.8, 0.05, 0.15)` (percentage values).
         :param batch_size: The batch size. Defaults to `64`.
         :param num_workers: The number of workers. Defaults to `0`.
         :param pin_memory: Whether to pin memory. Defaults to `False`.
@@ -82,6 +82,7 @@ class PokeDataModule(LightningDataModule):
         # load and split datasets only if not loaded already
         if not self.data_train and not self.data_val and not self.data_test:
             dataset = ImageFolder(root=self.data_dir, transform=self.transforms)
+            print(self.hparams.train_val_test_split)
             self.data_train, self.data_val, self.data_test = random_split(
                 dataset=dataset,
                 lengths=self.hparams.train_val_test_split,

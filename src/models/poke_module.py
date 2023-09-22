@@ -243,7 +243,6 @@ class PokeGanModule(LightningModule):
             self.gen(self.test_noise_batch), nrow=16, normalize=True, padding=2
         )
         name = f"test_gen_{batch_idx}"
-        print("\n\n\n\nLOGGER\n\n\n", self.logger, "\n\n\n\n\n\n")
         if isinstance(self.logger, TensorBoardLogger):
             # Log to TensorBoard
             self.logger[0].experiment.add_image(name, grid, self.current_epoch)
