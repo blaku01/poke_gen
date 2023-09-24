@@ -36,6 +36,7 @@ class DCDisc(nn.Module):
             nn.Conv2d(features_d * 8, 1, kernel_size=4, stride=2, padding=0),
             nn.Sigmoid(),
         )
+        self.apply(self._initialize_weights)
 
     def _block(self, in_channels, out_channels, kernel_size, stride, padding):
         layers = [
@@ -48,6 +49,13 @@ class DCDisc(nn.Module):
 
     def forward(self, x):
         return self.disc(x)
+
+    def _initialize_weights(self, m):
+        if isinstance(m, (nn.Conv2d, nn.ConvTranspose2d, nn.Linear)):
+            nn.init.normal_(m.weight, mean=0.0, std=0.02)
+        if isinstance(m, (nn.BatchNorm2d, nn.InstanceNorm2d)):
+            nn.init.normal_(m.weight, mean=1.0, std=0.02)
+            nn.init.constant_(m.bias, 0)
 
 
 class WDCDisc(nn.Module):

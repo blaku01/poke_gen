@@ -99,6 +99,8 @@ class PokeDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=True,
+            persistent_workers=True,
+            pin_memory=True,
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -112,6 +114,8 @@ class PokeDataModule(LightningDataModule):
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
+            persistent_workers=True,
+            pin_memory=True,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:

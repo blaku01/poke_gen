@@ -30,9 +30,12 @@ class NNGen(nn.Module):
 
 
 class DCGen(nn.Module):
-    def __init__(self, z_dim, channels_img, features_g, use_instance_norm=True):
+    def __init__(
+        self, z_dim, channels_img, features_g, use_instance_norm=True, use_batch_norm=False
+    ):
         super().__init__()
         self.use_instance_norm = use_instance_norm
+        self.use_batch_norm = use_batch_norm
         self.net = nn.Sequential(
             self._block(z_dim, features_g * 16, 4, 1, 0),
             self._block(features_g * 16, features_g * 8, 4, 2, 1),
@@ -42,6 +45,7 @@ class DCGen(nn.Module):
             nn.Tanh(),
         )
         self.input_shape = z_dim
+        self.apply(self._initialize_weights)
 
     def _block(self, in_channels, out_channels, kernel_size, stride, padding):
         layers = [
@@ -56,8 +60,17 @@ class DCGen(nn.Module):
         ]
         if self.use_instance_norm:
             layers.append(nn.InstanceNorm2d(out_channels))
+        if self.use_batch_norm:
+            layers.append(nn.BatchNorm2d(out_channels))
         layers.append(nn.ReLU())
         return nn.Sequential(*layers)
 
     def forward(self, x):
         return self.net(x)
+
+    def _initialize_weights(self, m):
+        if isinstance(m, (nn.Conv2d, nn.ConvTranspose2d, nn.Linear)):
+            nn.init.normal_(m.weight, mean=0.0, std=0.02)
+        if isinstance(m, (nn.BatchNorm2d, nn.InstanceNorm2d)):
+            nn.init.normal_(m.weight, mean=1.0, std=0.02)
+            nn.init.constant_(m.bias, 0)

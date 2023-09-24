@@ -18,7 +18,7 @@ seed: 42
 
 trainer:
   min_epochs: 10
-  max_epochs: 10
+  max_epochs: 50
 
 model:
   optimizer:
@@ -26,7 +26,9 @@ model:
   compile: false
   gen:
     channels_img: 3
-    features_g: 64
+    features_g: 128
+    use_batch_norm: true
+    use_instance_norm: false
   disc:
     features_d: 64
 
