@@ -41,6 +41,7 @@ class DCGen(nn.Module):
             nn.ConvTranspose2d(features_g * 2, channels_img, kernel_size=4, stride=2, padding=1),
             nn.Tanh(),
         )
+        self.input_shape = z_dim
 
     def _block(self, in_channels, out_channels, kernel_size, stride, padding):
         layers = [
@@ -55,7 +56,7 @@ class DCGen(nn.Module):
         ]
         if self.use_instance_norm:
             layers.append(nn.InstanceNorm2d(out_channels))
-        layers.append(nn.ReLU(0.2))
+        layers.append(nn.ReLU())
         return nn.Sequential(*layers)
 
     def forward(self, x):

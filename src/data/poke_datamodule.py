@@ -35,7 +35,7 @@ class PokeDataModule(LightningDataModule):
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
-
+        self.desired_shape = desired_shape
         transformations = [transforms.ToTensor()]
 
         if normalize:
@@ -43,7 +43,7 @@ class PokeDataModule(LightningDataModule):
                 raise ValueError("you need to pass mean and std in params to normalize the data")
             transformations.append(transforms.Normalize(mean, std))
         if desired_shape is not None:
-            transformations.append(transforms.Lambda(lambda x: x.view(*desired_shape)))
+            transformations.append(transforms.Lambda(transforms.Lambda(self.reshape_tensor)))
 
         if grayscale:
             transformations.append(transforms.Grayscale(num_output_channels=1))
@@ -57,7 +57,7 @@ class PokeDataModule(LightningDataModule):
     @property
     def num_classes(self) -> int:
         """Get the number of classes."""
-        return 1
+        return 2
 
     def prepare_data(self) -> None:
         """Download data if needed. Lightning ensures that `self.prepare_data()` is called only
@@ -82,7 +82,6 @@ class PokeDataModule(LightningDataModule):
         # load and split datasets only if not loaded already
         if not self.data_train and not self.data_val and not self.data_test:
             dataset = ImageFolder(root=self.data_dir, transform=self.transforms)
-            print(self.hparams.train_val_test_split)
             self.data_train, self.data_val, self.data_test = random_split(
                 dataset=dataset,
                 lengths=self.hparams.train_val_test_split,
@@ -151,6 +150,9 @@ class PokeDataModule(LightningDataModule):
         :param state_dict: The datamodule state returned by `self.state_dict()`.
         """
         pass
+
+    def reshape_tensor(self, x):
+        return x.view(*self.desired_shape)
 
 
 if __name__ == "__main__":

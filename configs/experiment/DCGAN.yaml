@@ -5,14 +5,14 @@
 
 defaults:
   - override /data: poke_images
-  - override /model: nn_poke_gen
+  - override /model: dc_poke_gen
   - override /callbacks: default
   - override /trainer: default
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
-tags: ["poke_gen", "NNDisc", "NNGen"]
+tags: ["poke_gen", "DCDisc", "DCGen"]
 
 seed: 42
 
@@ -22,11 +22,19 @@ trainer:
 
 model:
   optimizer:
-    lr: 0.002
+    lr: 0.0002
   compile: false
+  gen:
+    channels_img: 3
+    features_g: 64
+  disc:
+    features_d: 64
 
 data:
   batch_size: 64
+  normalize: True
+  mean: [0.5, 0.5, 0.5]
+  std: [0.5, 0.5, 0.5]
 
 logger:
   wandb:
