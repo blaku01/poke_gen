@@ -31,7 +31,6 @@ class PokeDataModule(LightningDataModule):
         """
         super().__init__()
         self.data_dir = data_dir
-
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
@@ -100,7 +99,6 @@ class PokeDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             shuffle=True,
             persistent_workers=True,
-            pin_memory=True,
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -115,7 +113,6 @@ class PokeDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             shuffle=False,
             persistent_workers=True,
-            pin_memory=True,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:

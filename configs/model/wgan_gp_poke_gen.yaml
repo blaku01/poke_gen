@@ -18,7 +18,7 @@ gen:
   channels_img: 3
 
 disc:
-  _target_: src.models.components.discriminators.WDCDisc
+  _target_: src.models.components.discriminators.DCDisc
   channels_img: 3
 
 criterion:

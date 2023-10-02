@@ -22,7 +22,7 @@ disc:
   img_dim: 11163
 
 criterion:
-  _target_: torch.nn.BCELoss
+  _target_: torch.nn.BCEWithLogitsLoss
 
 # compile model for faster training with pytorch 2.0
 compile: false

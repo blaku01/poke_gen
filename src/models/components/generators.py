@@ -59,7 +59,7 @@ class DCGen(nn.Module):
             ),
         ]
         if self.use_instance_norm:
-            layers.append(nn.InstanceNorm2d(out_channels))
+            layers.append(nn.InstanceNorm2d(out_channels, affine=True))
         if self.use_batch_norm:
             layers.append(nn.BatchNorm2d(out_channels))
         layers.append(nn.ReLU())

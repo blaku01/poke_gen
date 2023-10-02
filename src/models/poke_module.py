@@ -14,7 +14,7 @@ class PokeGanModule(LightningModule):
         self,
         gen: torch.nn.Module,
         disc: torch.nn.Module,
-        criterion: torch.nn.Module = torch.nn.BCELoss(),
+        criterion: torch.nn.Module = torch.nn.BCEWithLogitsLoss(),
         lr=0.001,
         optimizer_gen: torch.optim.Optimizer = torch.optim.Adam,
         optimizer_disc: torch.optim.Optimizer = torch.optim.Adam,

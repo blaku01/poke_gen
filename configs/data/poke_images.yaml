@@ -1,6 +1,6 @@
 _target_: src.data.poke_datamodule.PokeDataModule
-data_dir: ${paths.data_dir}/resized_converted_frames_front_only
+data_dir: ${paths.data_dir}/final_datafolder
 batch_size: 128
 train_val_test_split: [0.8, 0.05, 0.15]
 num_workers: 12
-pin_memory: False
+pin_memory: True
